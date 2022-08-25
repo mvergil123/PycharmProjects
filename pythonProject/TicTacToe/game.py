@@ -7,7 +7,7 @@ class TicTacToe:
         self.board = [' ' for _ in range(9)]
         self.current_winner = None
 
-    @staticmethod
+    #@staticmethod
     def print_board(self):
         for row in [self.board[i*3:(i+1) * 3] for i in range(3)]:
             print("| " + " | ".join(row) + ' |') 
@@ -19,7 +19,7 @@ class TicTacToe:
             print("| " + " | ".join(row) + ' |') 
 
     def available_moves(self):
-        return [i for i, x in enumerate(self.board) if x == " "]
+        return [i for i, spot in enumerate(self.board) if spot == " "]
         # moves = []
         # for (i, spot) in enumerate(self.board):
         #     if spot ==  ' ':
@@ -72,10 +72,10 @@ def play(game, x_player, o_player, print_game=True):
     if print_game:
         game.print_board_nums()
 
-    letter = "X"
+    letter = 'X'
    
     while game.empty_squares():
-        if letter == "O":
+        if letter == 'O':
             square = o_player.get_move(game)
         else:
              square = x_player.get_move(game)
@@ -90,7 +90,7 @@ def play(game, x_player, o_player, print_game=True):
                     print(letter + " wins!")
                 return letter
 
-            letter = "O" if letter == "X" else "X"
+            letter = 'O' if letter == 'X' else 'X'
            # if letter == "X":
             #    letter = "O"
             #else:
@@ -104,4 +104,4 @@ if __name__ == '__main__':
     x_player = HumanPlayer('X')
     o_player = GeniusComputerPlayer('O')
     t = TicTacToe()
-    play(t, x_player, o_player, print_game=False)
+    play(t, x_player, o_player, print_game=True)
