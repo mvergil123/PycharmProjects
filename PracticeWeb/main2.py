@@ -8,15 +8,15 @@ app = Flask(__name__)
 @app.route('/')
 def index():
 
-    file = open("index.html")
+    file = open("start.html")
     return file.read()
 
 
 
 
-@app.route('/bank')
-def bank():
-    file = open("bank.html")
-    return file.read()
+# @app.route('/bank')
+# def bank():
+#     file = open("bank.html")
+#     return file.read()
 
 app.run()
