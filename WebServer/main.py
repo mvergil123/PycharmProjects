@@ -25,22 +25,27 @@ def withdrawal():
 
 def get_amount_in_bank():
     output = os.popen('cat amount.txt')
-    amount_text = int(output.read())
+    amount_text = float(output.read())
     return amount_text
 
 
 def save_amount_in_bank(amount):
-    print(amount)
-    os.system(f'echo "1${amount}" > amount.txt')
+    file = open('amount.txt', 'w+')
+    file.write(str(amount))
+    file.close()
+    #os.system(f'echo "${amount}" > amount.txt')
 
 
 @app.route('/deposit')
 def deposit():
     # update the amount
-    amount = int(request.args.get('amount'))
-    amt = get_amount_in_bank() + amount
-    print(amt)
-    save_amount_in_bank(amt)
+    amount = float(request.args.get('amount'))
+    print(amount, "from user")
+    amt = get_amount_in_bank()
+    print(amt, "from bank")
+    total = amt + amount
+    print(total, 'total')
+    save_amount_in_bank(total)
     return "We have deposited your money!"
 
 app.run()
