@@ -36,13 +36,11 @@ def save_amount_in_bank(amount):
 
 @app.route('/deposit')
 def deposit():
-
-    save_amount_in_bank("1111111")
-
-    amt = get_amount_in_bank()
-
+    # update the amount
     amount = int(request.args.get('amount'))
-
-    return f"This is the amount ${amount}"
+    amt = get_amount_in_bank() + amount
+    print(amt)
+    save_amount_in_bank(amt)
+    return "We have deposited your money!"
 
 app.run()
