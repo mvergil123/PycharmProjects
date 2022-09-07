@@ -33,18 +33,14 @@ def save_amount_in_bank(amount):
     file = open('amount.txt', 'w+')
     file.write(str(amount))
     file.close()
-    #os.system(f'echo "${amount}" > amount.txt')
 
 
 @app.route('/deposit')
 def deposit():
     # update the amount
     amount = float(request.args.get('amount'))
-    print(amount, "from user")
     amt = get_amount_in_bank()
-    print(amt, "from bank")
     total = amt + amount
-    print(total, 'total')
     save_amount_in_bank(total)
     return "We have deposited your money!"
 
