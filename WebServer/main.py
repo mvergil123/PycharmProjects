@@ -20,7 +20,12 @@ def bank():
 
 @app.route('/withdrawal')
 def withdrawal():
-    pass
+    # update the amount
+    amount = float(request.args.get('amount'))
+    amt = get_amount_in_bank()
+    total = amt - amount
+    save_amount_in_bank(total)
+    return "We have withdrawn your money!"  
 
 
 def get_amount_in_bank():
@@ -43,5 +48,11 @@ def deposit():
     total = amt + amount
     save_amount_in_bank(total)
     return "We have deposited your money!"
+
+
+@app.route('/balance')
+def balance():
+    balance = get_amount_in_bank()
+    return f"You have ${balance}"
 
 app.run()
