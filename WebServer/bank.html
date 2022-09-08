@@ -42,6 +42,99 @@
         </style>
 
           <script src="https://cdn.tailwindcss.com"></script>
+          <script src="https://code.jquery.com/jquery-3.6.1.slim.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js""></script>
+
+          <script>
+            async function withdrawal(withdrawalAmt) {
+              await axios.get("/withdrawal?amount="+withdrawalAmt)
+            }
+
+            async function deposit(depositAmt) {
+              await axios.get("/deposit?amount="+depositAmt)
+            }
+
+            async function balance() {
+
+              var amount = await axios.get("/balance")
+              console.log(amount)
+              return amount.data
+
+            }
+
+            async function updateHtmlWithBalance() {
+              var userBalance = await balance()
+
+              $(".balance").text(userBalance)
+
+            }
+
+            var isDeposit = false;
+            var isWithdrawal = false;
+
+            async function submit() {
+              //alert("The user has clicked the submit button.")
+
+              if (isDeposit) {
+                // get amount to deposit from user
+                var amt = $("input#amount").val()
+                //alert(amt)
+                if (!amt) {
+                  throw "amt is not defined"
+                  return
+                }
+
+                // call deposit function with amount
+                deposit(amt)
+
+                // reload page
+                location.reload()
+
+                
+              } else {
+                var amt = $("input#amount").val()
+                //alert(amt)
+                if (!amt) {
+                  throw "amt is not defined"
+                  return
+                }
+
+                withdrawal(amt)
+                
+
+                //reload page
+                location.reload()
+
+
+              }
+
+            }
+
+            function setDeposit() {
+              isDeposit = true;
+              isWithdrawal = false;
+            }
+
+            function setWithdrawal() {
+              isDeposit = false;
+              isWithdrawal = true;
+            }
+
+
+
+            $(() => {
+
+              alert("Welcome to the bank, checking balance!")
+
+              updateHtmlWithBalance()
+
+
+
+
+
+            })
+          </script>
+
     </head>
     <body>
 
@@ -135,24 +228,24 @@
 
 
     <div class="mt-5 md:col-span-2 md:mt-0">
-      <form action="#" method="POST">
+      <div>
         <div class="shadow sm:overflow-hidden sm:rounded-md">
           <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
             <div class="grid grid-cols-3 gap-6">
               <div class="col-span-3 sm:col-span-2">
 
                   <div>
-                    <h1>Welcome to your bank, Keith.</h1>
-                    <h2>You currently have $500.00 in your account.</h2>
+                    <h1>Welcome to your bank.</h1>
+                    <h2 class="balance">You currently have $500.00 in your account.</h2>
                   </div>
 
                 <label for="company-website" class="block text-sm font-medium text-gray-700">Do you want to deposit or withdrawal?</label>
                 <div class="mt-1 flex rounded-md shadow-sm">
                     <label>Deposit</label>
-                    <input type="radio" name="type" id="company-website" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <input onclick="setDeposit()" type="radio" name="type" id="type-deposit" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
 
                     <label>Withdrawal</label>
-                    <input type="radio" name="type" id="company-website" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <input onclick="setWithdrawal()" type="radio" name="type" id="type-withdrawal" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
               </div>
             </div>
@@ -160,7 +253,7 @@
             <div>
               <label for="about" class="block text-sm font-medium text-gray-700">Amount</label>
               <div class="mt-1">
-                <input id="about" name="about" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Amount"></input>
+                <input id="amount" name="amount" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Amount"></input>
               </div>
               <p class="mt-2 text-sm text-gray-500">Amount you want to deposit.</p>
             </div>
@@ -168,7 +261,7 @@
 
           </div>
           <div class="bg-gray-50 px-4 py-3 text-left sm:px-6">
-            <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Submit</button>
+            <button onclick="submit()" type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Submit</button>
           </div>
         </div>
       </form>
